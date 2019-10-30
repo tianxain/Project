@@ -12,38 +12,30 @@ void AddressBookInit(AddressBook *pBook)//初始化通讯录
 
 void InputInfo(AddressInfo *pInfo)//输入一个联系人信息
 {
-	char inputName[NAME_LEN] = "XXX";
-	char inputTel[TEL_LEN] = "000";
-	int inputAge = 0;
-	int inputSex = 0;
 	printf("Information:\n");
 	printf("**************************************************\n");
 	printf("Please input the Name:");
-	scanf("%s", &inputName);
-	strcpy(pInfo->_name, inputName);
+	scanf("%s", pInfo->_name);
 	printf("Please input the Tel:");
-	scanf("%s", inputTel);
-	strcpy(pInfo->_tel, inputTel);
+	scanf("%s", pInfo->_tel);
 	printf("Please input the Age:");
 	do
 	{
-		scanf("%d", &inputAge);
-		if (inputAge < 0)
+		scanf("%d", &pInfo->_age);
+		if (pInfo->_age < 0)
 		{
 			printf("  Input errors, please input again:");
 		}
-	} while (inputAge < 0);
-	pInfo->_age = inputAge;
+	} while (pInfo->_age < 0);
 	printf("Please input the Sex:");
 	do
 	{
-		scanf("%d", &inputSex);
-		if (inputSex != 0 && inputSex != 1)
+		scanf("%d", &pInfo->_sex);
+		if (pInfo->_sex != 0 && pInfo->_sex != 1)
 		{
 			printf("  Input errors, please input again:");
 		}
-	} while (inputSex != 0 && inputSex != 1);
-	pInfo->_sex = inputSex;
+	} while (pInfo->_sex != 0 && pInfo->_sex != 1);
 	printf("**************************************************\n");
 }
 
