@@ -10,7 +10,10 @@ void PrintMenu()//打印菜单
 	printf("*3.Delete contact           ");
 	printf("*4.Edit contact      *\n");
 	printf("*5.Show the address book    ");
-	printf("*0.exit              *\n");
+	printf("*6.Exports from file *\n");
+	printf("*7.Save                     ");
+	printf("*8.Clear AddressBook *\n");
+	printf("*0.exit                                          *\n");
 	printf("**************************************************\n");
 	printf("Please input your choose:");
 }
@@ -26,6 +29,7 @@ int main()
 	pInfo = &info;
 	AddressBook addressBook;//声明一个通讯录
 	AddressBookInit(&addressBook);//初始化通讯录
+  
 	do 
 	{
 		PrintMenu();
@@ -37,9 +41,21 @@ int main()
 			break;
 		case 1:
 			InputInfo(pInfo);
+			for (size_t i = 0; i < addressBook._size; i++)
+			{
+				if (strcmp(addressBook._AIArray[i]._tel, pInfo->_tel) == 0)
+				{
+					printf("This contact already exists！\n\n");
+					
+					goto BREAK;
+					
+				}
+			}
 			AddressBookAdd(&addressBook,pInfo);
+			printf("\nSuccsessfully added!\n");
+			printf("**************************************************\n");
 			PrintAddressInfo(&addressBook,pInfo, (&addressBook)->_size-1);
-			break;
+			BREAK:break;
 		case 2:
 			printf("Please input the contact which you need to find:\n");
 			scanf("%s", NameOrTel);
@@ -59,10 +75,22 @@ int main()
 		case 5:
 			PrintAddressBook(&addressBook);
 			break;
+		case 6:
+			AddressBookLoad(&addressBook, "test.txt");
+			break;
+		case 7:
+			AddressBookSave(&addressBook, "test.txt");
+			printf("Succsessfully saved!\n");
+			printf("**************************************************\n\n");
+			break;
+		case 8:
+			AddressBookInit(&addressBook);
+			printf("Succsessfully cleared!\n");
+			printf("**************************************************\n\n");
+			break;
 		default:
 			break;
 		}
-
 	} while (operate);
 	return 0;
 }

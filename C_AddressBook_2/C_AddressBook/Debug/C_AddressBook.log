@@ -1,4 +1,6 @@
 ﻿  AddressBook.c
+e:\github\myrepository\project\c_addressbook_2\c_addressbook\addressbook.c(268): warning C4133: “函数”: 从“AddressInfo *”到“const char *const ”的类型不兼容
   Test.c
   正在生成代码...
+  LINK : 没有找到 E:\GitHub\MyRepository\Project\C_AddressBook_2\Debug\C_AddressBook.exe 或上一个增量链接没有生成它；正在执行完全链接
   C_AddressBook.vcxproj -> E:\GitHub\MyRepository\Project\C_AddressBook_2\Debug\C_AddressBook.exe

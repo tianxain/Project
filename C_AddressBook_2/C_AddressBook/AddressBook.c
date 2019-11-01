@@ -69,6 +69,11 @@ void PrintAddressInfo(AddressBook *pBook,AddressInfo *pInfo, size_t num)//打印个
 void PrintAddressBook(AddressBook *pBook)//打印通讯录
 {
 	assert(pBook);
+	if (pBook->_size == 0)
+	{
+		printf("AddressBook is empty!\n");
+		printf("**************************************************\n");
+	}
 
 	size_t i = 0;
 	for (i = 0; i < pBook->_size; i++)
@@ -88,14 +93,13 @@ void AddressBookAdd(AddressBook *pBook, AddressInfo *pInfo)//增加通讯录成员
 		pBook->_AIArray = realloc(pBook->_AIArray,pBook->_capacity*2*sizeof(AddressInfo));
 		pBook->_capacity *= 2;
 	}
-
 		strcpy(pBook->_AIArray[pBook->_size]._name, pInfo->_name);
 		strcpy(pBook->_AIArray[pBook->_size]._tel, pInfo->_tel);
 		pBook->_AIArray[pBook->_size]._age = pInfo->_age;
 		pBook->_AIArray[pBook->_size]._sex = pInfo->_sex;
 		pBook->_size++;
-		printf("\nSuccsessfully added!\n");
-		printf("**************************************************\n");
+		//printf("\nSuccsessfully added!\n");
+		//printf("**************************************************\n");
 }
 
 
@@ -156,6 +160,7 @@ void AddressBookDelete(AddressBook *pBook, char *pDelInfo)//删除通讯录成员
 			pBook->_size--;
 			i--;
 			printf("\nSuccsessfully delete!\n\n");
+			printf("**************************************************\n");
 		}
 	}
 	if (flag == pBook->_size)
@@ -244,11 +249,10 @@ void AddressBookSave(AddressBook* pBook, const char* filename)//将通讯录写入文件
 	FILE *pFile = fopen(filename,"w");
 	for (size_t i = 0; i < pBook->_size; i++)
 	{
-		fwrite(&pBook->_AIArray[i],sizeof(AddressInfo),1, pFile);
+		fprintf(pFile, "%s\n%s\n%d\n%d\n",pBook->_AIArray[i]._name, pBook->_AIArray[i]._tel, pBook->_AIArray[i]._age, pBook->_AIArray[i]._sex);
 	}
-	AddressInfo endInfo;
-	endInfo._age = -1;
-	fwrite(&endInfo, sizeof(AddressInfo), 1,pFile);
+	AddressInfo endInfo = { "XXX","000",-1,MAN };
+	fprintf(pFile, "%s\n%s\n%d\n%d", endInfo._name, endInfo._tel, endInfo._age, endInfo._sex);
 	fclose(pFile);
 }
 
@@ -258,9 +262,11 @@ void AddressBookLoad(AddressBook* pBook, const char* filename)//从文件读出联系人
 
 	FILE *pFile = fopen(filename, "r");
 	AddressInfo tempInfo;
+	int count = 0;
 	while (1)
 	{
-		fread(&tempInfo,sizeof(AddressInfo),1,pFile);
+		fscanf(pFile,&tempInfo,sizeof(AddressInfo),1,pFile);
+		fscanf(pFile, "%s %s %d %d", tempInfo._name, tempInfo._tel, &tempInfo._age, &tempInfo._sex);
 		if (tempInfo._age == -1)
 		{
 			fclose(pFile);
@@ -268,6 +274,9 @@ void AddressBookLoad(AddressBook* pBook, const char* filename)//从文件读出联系人
 		}
 		else {
 			AddressBookAdd(pBook,&tempInfo);
+			count++;
 		}
 	}
+	printf("%d contacts was succsessfully exported!\n",count);
+	printf("**************************************************\n\n");
 }
